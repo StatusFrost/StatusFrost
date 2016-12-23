@@ -1,77 +1,87 @@
-
-
 //Grab settings object
 var settings = new Store("settings");
 var analyticsEnabled = settings.get("cb_enableAnalytics")
 
 
 //Enable google analytics if analytics are enabled
-if(analyticsEnabled) {
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','js/analytics.js','ga');
-    ga('create', 'UA-67106116-5', 'auto');  // Replace with your property ID.
+if (analyticsEnabled) {
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'js/analytics.js', 'ga');
+    ga('create', 'UA-67106116-5', 'auto'); // Replace with your property ID.
     ga('send', 'pageview');
 }
 
 //Gather keypress velocity readings at x * 1000ms interval.
 var VELOCITY_INTERVAL = 3;
-const CALIBRATION_SAMPLES = 5;
-var samplesTaken = 0;
-var avgKeyPressesPerInterval = 0;
 var keyPressesWithinInterval = 0;
 var intervalStart = -1;
 chrome.extension.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    if(request.type && request.type == "keypress") {
-        keyPressesWithinInterval++;
-        var time = new Date().getTime();
-        console.log(time - intervalStart);
-        if(intervalStart == -1) {
-            intervalStart = time;
+    function(request, sender, sendResponse) {
+        if (request.type && request.type == "keypress") {
+            incrementStatistic('cpm');
         }
-        else if(time - intervalStart >= VELOCITY_INTERVAL * 1000) {
-            /*if(samplesTaken < CALIBRATION_SAMPLES) {
-                avgKeyPressesPerInterval += keyPressesWithinInterval;
-                console.log("Took sample!")
-                samplesTaken++;
-            } else if(samplesTaken == CALIBRATION_SAMPLES) {
-                avgKeyPressesPerInterval /= samplesTaken;
-                VELOCITY_INTERVAL = 10;
-                console.log("Done!")
-            } else if(keyPressesWithinInterval - avgKeyPressesPerInterval < -20) {
-                console.log("Presses > 20 less than avg. Skipping.")
-                return;
-            }*/
-            console.log("Presses: " + keyPressesWithinInterval)
-            var keyVelocity = keyPressesWithinInterval * (60 / VELOCITY_INTERVAL)
-            console.log(keyVelocity);
-            if(keyPressesWithinInterval <= 5 * (VELOCITY_INTERVAL/3) || keyVelocity < 50) {
-               console.log("Not enough presses. returning.");
-               keyPressesWithinInterval = 0;
-               intervalStart = time;
-               keyPressesWithinInterval = 0;
-               return;
-           }
-           intervalStart = time;
-           keyPressesWithinInterval = 0;
-            chrome.storage.sync.get('cpm', function(result) {
-                if(!result) {
-                    result = {};
-                } else {
-                    result = result.keyVelocity;
-                }
-                result[time] = keyVelocity;
-                chrome.storage.sync.set({'cpm': result}, function() {
-                    console.log(result)
-                });
-            })
-            if(analyticsEnabled) {
-                ga('send', 'event', 'Analytics Track', 'Key Pressed');
-                console.log(keyVelocity)
-            }
-        }
+        sendResponse();
+    });
+
+function StatTracker(name) {
+    this.name = name;
+    this.timer = null;
+    this.valueWithinInterval = 0;
+    this.minCount = 5 * (VELOCITY_INTERVAL / 3);
+    this.minValue = 50;
+}
+
+var statTrackers = {};
+
+function incrementStatistic(statisticName) {
+    if (!statTrackers[statisticName]) {
+        statTrackers[statisticName] = new StatTracker(statisticName);
     }
-    sendResponse();
-  });
+    var tracker = statTrackers[statisticName];
+    tracker.valueWithinInterval++;
+    if (!tracker.timer) {
+        tracker.timer = setInterval(function() {
+            var time = new Date().getTime();
+            var statValue = tracker.valueWithinInterval;
+            var avgOverTime = statValue * (60 / VELOCITY_INTERVAL)
+            if (statValue <= tracker.minCount || avgOverTime < tracker.minValue) {
+                console.log("Not enough samples. Skipping set.");
+                tracker.valueWithinInterval = 0;
+                return;
+            }
+            console.log(statisticName + ": " + statValue);
+            tracker.valueWithinInterval = 0;
+            addValue(tracker.name, time, avgOverTime)
+            if (analyticsEnabled) {
+                ga('send', 'event', 'Analytics Track', tracker.name);
+            }
+
+        }, VELOCITY_INTERVAL * 1000);
+    }
+    statTrackers[statisticName] = tracker; //Just in case...
+}
+
+
+function addValue(storageKey, time, value) {
+    chrome.storage.sync.get(storageKey, function(result) {
+        if (!result) {
+            result = {};
+        } else {
+            result = result[storageKey];
+        }
+        result[time] = value;
+        var setter = {};
+        setter[storageKey] = result
+        chrome.storage.sync.set(setter, function() {});
+    })
+
+}
