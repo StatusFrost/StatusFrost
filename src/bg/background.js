@@ -56,14 +56,14 @@ chrome.extension.onMessage.addListener(
            }
            intervalStart = time;
            keyPressesWithinInterval = 0;
-            chrome.storage.sync.get('keyVelocity', function(result) {
+            chrome.storage.sync.get('cpm', function(result) {
                 if(!result) {
                     result = {};
                 } else {
                     result = result.keyVelocity;
                 }
                 result[time] = keyVelocity;
-                chrome.storage.sync.set({'keyVelocity': result}, function() {
+                chrome.storage.sync.set({'cpm': result}, function() {
                     console.log(result)
                 });
             })
