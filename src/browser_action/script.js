@@ -72,13 +72,21 @@ function iterateStatistic(i) {
         chrome.storage.sync.get(statName, function(result) {
             var resultValue = result[statName];
             var ctx = document.getElementById(statName + "Chart");
-            console.log(result)
-            if (statistic.graphType == 'number') {
-                ctx.innerHTML = "<h2>" + resultValue + "</h2>";
-            } else if (statistic.graphType == 'line') {
-                var timestamps = Object.keys(resultValue);
-                var maxValues = 10 * bucketSize;
-                renderLineChart(timestamps, resultValue, maxValues, ctx, statistic.friendlyName);
+            if(resultValue) {
+                if (statistic.graphType == 'number') {
+                    ctx.innerHTML = "<h2>" + resultValue + "</h2>";
+                } else if (statistic.graphType == 'line') {
+                    var timestamps = Object.keys(resultValue);
+                    var maxValues = 10 * bucketSize;
+                    renderLineChart(timestamps, resultValue, maxValues, ctx, statistic.friendlyName);
+                }
+            } else {
+                if (statistic.graphType == 'number') {
+                    ctx.innerHTML = "<h2>Not enough data collected!</h2>"
+                } else {
+                    ctx.getContext('2d').font = "20px Times New Roman"
+                    ctx.getContext('2d').fillText('Not enough data collected!', 50, 50)
+                }
             }
             iterateStatistic(i + 1);
         });
