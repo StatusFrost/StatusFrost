@@ -15,12 +15,10 @@ Array.prototype.forEach.call(document.getElementsByClassName("btn-stat"), functi
         } else {
             elem.className = elem.className.replace(/ \bactive\b/, "");
             elem.innerHTML = elem.getAttribute("original-value");
-            setTimeout(function() {
-                Array.prototype.forEach.call(document.getElementsByClassName("btn-stat"), function(element) {
-                    if (element.id != elem.id)
-                        element.style.display = "inline-block"
-                });
-            }, 120)
+            Array.prototype.forEach.call(document.getElementsByClassName("btn-stat"), function(element) {
+                if (element.id != elem.id)
+                    element.style.display = "inline-block"
+            });
         }
         var viewStr = elem.getAttribute("view");
         if (viewStr) {
@@ -43,7 +41,9 @@ function Statistic(name, friendlyName, graphType, group) {
 }
 
 statistics.push(new Statistic("cpm", "Characters per Minute", "line"));
-statistics.push(new Statistic("pageviews", "Page Views", "number"));
+statistics.push(new Statistic("pageviews", "Total Page Views", "number"));
+statistics.push(new Statistic("nonsslviews", "Unencrypted Page Views", "number", "pageViewCrypto"));
+statistics.push(new Statistic("sslviews", "Encrypted Page Views", "number", "pageViewCrypto"));
 statistics.push(new Statistic("category-programming", "Programming", "number", "pageViewCategory"));
 statistics.push(new Statistic("category-productivity", "Productivity", "number", "pageViewCategory"));
 statistics.push(new Statistic("category-search", "Search", "number", "pageViewCategory"));

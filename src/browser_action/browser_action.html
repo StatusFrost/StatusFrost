@@ -6,15 +6,20 @@
 			background: #ecf0f1;
 		}
 
-		#mainPopup {
-			padding: 10px;
-			height: 500px;
+		#flex-container {
+			height: 50%;
 			width: 400px;
 			font-family: Helvetica, Ubuntu, Arial, sans-serif;
 			text-align: center;
 			display: flex;
 			flex-direction: row;
-			justify-content: center;
+    		flex-wrap: wrap;
+			align-items: center;
+   			justify-content: center;
+		}
+
+		#mainPopup {
+			height: 500px
 		}
 
 		h1 {
@@ -32,13 +37,12 @@
 		.btn-stat {
 			display: inline-block;
 			border: none;
-			width: 150px;
+			width: 100px;
 			height: 20px;
 			padding: 20px;
 			background: #2ecc71;
 			/** Offset the Position **/
 			position: relative;
-			top: 0;
 			margin-top: 0;
 			margin-bottom: 10px;
 			/** 3D Block Effect **/
@@ -60,6 +64,7 @@
 			box-shadow: none;
 			top: 10px;
 			left: 10px;
+			position: absolute;
 			margin-bottom: 0;
 			animation-play-state: running;
 			width: 50px;
@@ -73,14 +78,20 @@
 </head>
 
 <div id="mainPopup">
-	<div id="stat-cpm" class="btn-stat" view="data-view-cpm">Characters Per Minute</div>
-	<div id="stat-pageData" class="btn-stat" view="data-view-page-data">Page Data</div>
-	<br>
+	<div id="flex-container">
+		<div id="stat-cpm" class="btn-stat" view="data-view-cpm">Characters Per Minute</div>
+		<div id="stat-pageData" class="btn-stat" view="data-view-page-data">Page Data</div>
+		<br>
+		<div id="stat-cryptoData" class="btn-stat" view="data-view-crypto-data">Crytpo Data</div>
+	</div>
 </div>
 <div class="dataView" id="data-view-page-data">
 	<b>Pages visited: </b>
 	<div id="pageviewsChart"></div>
 	<canvas id="pageViewCategoryChart" width="400" height="400"></canvas>
+</div>
+<div class="dataView" id="data-view-crypto-data">
+	<canvas id="pageViewCryptoChart" width="400" height="400"></canvas>
 </div>
 <div class="dataView" id="data-view-cpm">
 	<canvas id="cpmChart" width="400" height="400"></canvas>

@@ -31,8 +31,11 @@ chrome.extension.onMessage.addListener(
                 incrementStatistic('cpm');
             } else if(request.type == "pageLoad") {
                 incrementStatistic('pageviews');
+                console.log(request.sslUsed);
                 if(request.sslUsed) {
                     incrementStatistic('sslviews');
+                } else {
+                    incrementStatistic('nonsslviews');
                 }
                 if(request.domain) {
                     var categories = getDomainCategories(request.domain);

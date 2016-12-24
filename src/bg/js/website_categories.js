@@ -6,19 +6,20 @@ const WEBSITE_CATEGORIES = {
         "*jsfiddle.net",
         "*codepen.io",
         "*mozilla.org",
-        "*codecademy.com",
+        "*codecademy.com"
     ],
     productivity: [
         "*slack.com",
         "*trello.com",
         "*skype.com",
-        "*stackexchange.com",
+        "*stackexchange.com"
     ],
     search: [
-        "*google.com",
+        "www.google.com",
+        "google.com",
         "*bing.com",
         "*yahoo.com",
-        "*duckduckgo.com",
+        "*duckduckgo.com"
     ],
     social: [
         "*twitter.com",
@@ -28,7 +29,8 @@ const WEBSITE_CATEGORIES = {
         "*reddit.com",
         "*instagram.com",
         "*skype.com",
-        "*steamcommunity.com",
+        "*youtube.com",
+        "*steamcommunity.com"
     ],
     gaming: [
         "*steampowered.com",
@@ -36,7 +38,7 @@ const WEBSITE_CATEGORIES = {
         "*curseforge.com",
         "*gamepedia.com",
         "*minecraft.net",
-        "*mojang.com",
+        "*mojang.com"
     ],
     adult: [
         "*pornhub.com",
