@@ -12,5 +12,5 @@ function keyPressListener(e) {
 }
 
 function documentReady() {
-	chrome.extension.sendMessage({type:"pageLoad", sslUsed: location.protocol === 'https:'})	
+	chrome.extension.sendMessage({type:"pageLoad", sslUsed: location.protocol === 'https:', domain: window.location.hostname})	
 }

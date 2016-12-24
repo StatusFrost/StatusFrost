@@ -12,6 +12,9 @@
 			width: 400px;
 			font-family: Helvetica, Ubuntu, Arial, sans-serif;
 			text-align: center;
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
 		}
 
 		h1 {
@@ -30,6 +33,7 @@
 			display: inline-block;
 			border: none;
 			width: 150px;
+			height: 20px;
 			padding: 20px;
 			background: #2ecc71;
 			/** Offset the Position **/
@@ -42,6 +46,8 @@
 			transition: 0.08s;
 			animation-fill-mode: forwards;
 			animation-play-state: paused;
+			margin-left: 10px;
+			margin-right: 10px;
 		}
 
 		.btn-stat:hover,
@@ -53,6 +59,7 @@
 			/** Remove 3D Block Effect on Click **/
 			box-shadow: none;
 			top: 10px;
+			left: 10px;
 			margin-bottom: 0;
 			animation-play-state: running;
 			width: 50px;
@@ -66,10 +73,18 @@
 </head>
 
 <div id="mainPopup">
-	<div id="stat-cpm" class="btn-stat" view="data-view-wpm">Characters Per Minute</div>
+	<div id="stat-cpm" class="btn-stat" view="data-view-cpm">Characters Per Minute</div>
+	<div id="stat-pageData" class="btn-stat" view="data-view-page-data">Page Data</div>
+	<br>
 </div>
-<div class="dataView" id="data-view-wpm">
+<div class="dataView" id="data-view-page-data">
+	<b>Pages visited: </b>
+	<div id="pageviewsChart"></div>
+	<canvas id="pageViewCategoryChart" width="400" height="400"></canvas>
+</div>
+<div class="dataView" id="data-view-cpm">
 	<canvas id="cpmChart" width="400" height="400"></canvas>
 </div>
 <script src="Chart.bundle.min.js"></script>
+<script src="colors.js"></script>
 <script src="script.js"></script>
