@@ -77,7 +77,7 @@ function iterateStatistic(i) {
                 ctx.innerHTML = "<h2>" + resultValue + "</h2>";
             } else if (statistic.graphType == 'line') {
                 var timestamps = Object.keys(resultValue);
-                var maxValues = 15 * bucketSize;
+                var maxValues = 30 * bucketSize;
                 renderLineChart(timestamps, resultValue, maxValues, ctx, statistic.friendlyName);
             }
             iterateStatistic(i + 1);
