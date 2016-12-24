@@ -49,6 +49,7 @@ statistics.push(new Statistic("category-search", "Search", "number", "pageViewCa
 statistics.push(new Statistic("category-social", "Social", "number", "pageViewCategory"));
 statistics.push(new Statistic("category-gaming", "Gaming", "number", "pageViewCategory"));
 statistics.push(new Statistic("category-commerce", "Commerce", "number", "pageViewCategory"));
+statistics.push(new Statistic("category-entertainment", "Entertainment", "number", "pageViewCategory"));
 var groupData = {};
 iterateStatistic();
 
