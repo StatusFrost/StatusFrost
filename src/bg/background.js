@@ -52,6 +52,10 @@ function getDomainCategories(domain) {
     for(var i = 0; i < Object.keys(WEBSITE_CATEGORIES).length; i++) {
         var category = Object.keys(WEBSITE_CATEGORIES)[i];
         WEBSITE_CATEGORIES[category].forEach(function(pattern) {
+            var dotCount = (domain.match(/\./g) || []).length;
+            if(dotCount <= 1 && pattern.startsWith("*.")) {
+                pattern = "*" + pattern.substring(2);
+            }
             if((pattern.startsWith("*") && domain.endsWith(pattern.substring(1))) || pattern === domain) {
                 domainCategories.push(category);
             }
