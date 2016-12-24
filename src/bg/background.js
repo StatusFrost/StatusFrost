@@ -1,6 +1,11 @@
 //Grab settings object
 var settings = new Store("settings");
-var analyticsEnabled = settings.get("cb_enableAnalytics")
+var analyticsEnabled = settings.get("cb_enableAnalytics");
+
+//Check for updated settings every 30s
+setInterval(function() {
+     analyticsEnabled = settings.get("cb_enableAnalytics");
+}, 30000)
 
 
 //Enable google analytics if analytics are enabled
