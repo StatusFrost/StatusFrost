@@ -129,8 +129,6 @@ function addValue(storageKey, time, value) {
     chrome.storage.sync.get(storageKey, function(result) {
         if (!result) {
             result = {};
-        } else {
-            result = result[storageKey];
         }
         result[time] = value;
         var setter = {};
