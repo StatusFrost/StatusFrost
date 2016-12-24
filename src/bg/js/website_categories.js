@@ -26,6 +26,7 @@ const WEBSITE_CATEGORIES = {
         "*instagram.com",
         "*snapchat.com",
         "*reddit.com",
+        "*instagram.com",
         "*skype.com",
         "*steamcommunity.com",
     ],
