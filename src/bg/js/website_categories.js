@@ -40,6 +40,9 @@ const WEBSITE_CATEGORIES = {
         "*minecraft.net",
         "*mojang.com"
     ],
+    commerce: [
+        "*paypal.com"
+    ],
     adult: [
         "*pornhub.com",
         "*xhamster.com",

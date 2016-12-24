@@ -31,7 +31,6 @@ chrome.extension.onMessage.addListener(
                 incrementStatistic('cpm');
             } else if(request.type == "pageLoad") {
                 incrementStatistic('pageviews');
-                console.log(request.sslUsed);
                 if(request.sslUsed) {
                     incrementStatistic('sslviews');
                 } else {
@@ -39,7 +38,6 @@ chrome.extension.onMessage.addListener(
                 }
                 if(request.domain) {
                     var categories = getDomainCategories(request.domain);
-                    console.log(categories);
                     categories.forEach(function(category) {
                         incrementStatistic('category-' + category);
                     })
@@ -94,7 +92,6 @@ function incrementStatistic(statisticName) {
             var statValue = tracker.valueWithinInterval;
             var avgOverTime = statValue * (60 / VELOCITY_INTERVAL)
             if (statValue <= tracker.minCount || avgOverTime < tracker.minValue) {
-                //console.log("Not enough samples. Skipping set.");
                 tracker.valueWithinInterval = 0;
                 return;
             }
@@ -102,7 +99,6 @@ function incrementStatistic(statisticName) {
             addValue(tracker.name, time, avgOverTime)
         }, VELOCITY_INTERVAL * 1000);
     } else if(!tracker.velocityEnabled) {
-        console.log(tracker.name)
         incrementValue(tracker.name, 1)
     }
     statTrackers[statisticName] = tracker; //Just in case...

@@ -1,7 +1,6 @@
 var statistics = [];
 var bucketSize = 10;
 Array.prototype.forEach.call(document.getElementsByClassName("btn-stat"), function(elem) {
-    console.log(elem);
     elem.onclick = function() {
         var inactive = elem.className.indexOf("active") == -1;
         if (inactive) {
@@ -49,6 +48,7 @@ statistics.push(new Statistic("category-productivity", "Productivity", "number",
 statistics.push(new Statistic("category-search", "Search", "number", "pageViewCategory"));
 statistics.push(new Statistic("category-social", "Social", "number", "pageViewCategory"));
 statistics.push(new Statistic("category-gaming", "Gaming", "number", "pageViewCategory"));
+statistics.push(new Statistic("category-commerce", "Commerce", "number", "pageViewCategory"));
 var groupData = {};
 iterateStatistic();
 
