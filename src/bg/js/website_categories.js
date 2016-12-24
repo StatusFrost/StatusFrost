@@ -38,7 +38,12 @@ const WEBSITE_CATEGORIES = {
         "*curseforge.com",
         "*gamepedia.com",
         "*minecraft.net",
-        "*mojang.com"
+        "*mojang.com",
+        "*ign.com",
+        "*gamefaqs.com",
+        "*kotaku.com",
+        "*n4g.com",
+        "*neoseeker.com"    
     ],
     commerce: [
         "*paypal.com"
