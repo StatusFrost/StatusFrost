@@ -47,7 +47,10 @@ const WEBSITE_CATEGORIES = {
         "*.neoseeker.com"
     ],
     entertainment: [
-        "*.netflix.com"
+        "*.netflix.com",
+        "*.youtube.com",
+        "*.hulu.com",
+        "*.vimeo.com"
     ],
     commerce: [
         "*.paypal.com",
