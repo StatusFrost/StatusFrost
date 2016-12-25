@@ -31,7 +31,8 @@ const WEBSITE_CATEGORIES = {
         "*.instagram.com",
         "*.skype.com",
         "*.youtube.com",
-        "*.steamcommunity.com"
+        "*.steamcommunity.com",
+        "*.quora.com"
     ],
     gaming: [
         "*.steampowered.com",
