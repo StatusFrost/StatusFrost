@@ -1,8 +1,9 @@
 {
-  "name": "StatusFrost",
-  "version": "0.0.8",
+  "name": "StatusFrost - Statistics on Your Browsing",
+  "short_name": "StatusFrost",
+  "version": "0.0.9",
   "manifest_version": 2,
-  "description": "Track your personal browser statistics",
+  "description": "Track your personal browsing statistics",
   "homepage_url": "https://github.com/Plazmaz/StatusFrost",
   "icons": {
     "128": "icons/icon128.png"

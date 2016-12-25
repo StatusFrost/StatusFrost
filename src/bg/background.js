@@ -4,12 +4,28 @@ var analyticsEnabled = settings.get("cb_enableAnalytics");
 
 //Check for updated settings every 30s
 setInterval(function() {
-     analyticsEnabled = settings.get("cb_enableAnalytics");
+    var originallyEnabled = analyticsEnabled;
+    analyticsEnabled = settings.get("cb_enableAnalytics");//Enable google analytics if analytics are enabled
+    if(!originallyEnabled && analyticsEnabled) {
+        (function(i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function() {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'js/analytics.js', 'ga');
+        ga('create', 'UA-67106116-5', 'auto'); // Replace with your property ID.
+        ga('send', 'pageview');
+    }
 }, 30000)
 
 
 //Enable google analytics if analytics are enabled
-if (analyticsEnabled) {
+if(analyticsEnabled) {
     (function(i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r;
         i[r] = i[r] || function() {
@@ -31,22 +47,28 @@ var keyPressesWithinInterval = 0;
 var intervalStart = -1;
 chrome.extension.onMessage.addListener(
     function(request, sender, sendResponse) {
-        if (request.type){
-            if(request.type == "keypress") {
-                incrementStatistic('cpm');
-            } else if(request.type == "pageLoad") {
-                incrementStatistic('pageviews');
-                if(request.sslUsed) {
-                    incrementStatistic('sslviews');
-                } else {
-                    incrementStatistic('nonsslviews');
-                }
-                if(request.domain) {
-                    var categories = getDomainCategories(request.domain);
-                    categories.forEach(function(category) {
-                        incrementStatistic('category-' + category);
-                    })
-                }
+        if(request.type) {
+            switch(request.type) {
+                case "keypress":
+                    incrementStatistic('cpm');
+                    break;
+                case "pageLoad":
+                    incrementStatistic('pageviews');
+                    if(request.sslUsed) {
+                        incrementStatistic('sslviews');
+                    } else {
+                        incrementStatistic('nonsslviews');
+                    }
+                    if(request.domain) {
+                        var categories = getDomainCategories(request.domain);
+                        categories.forEach(function(category) {
+                            incrementStatistic('category-' + category);
+                        })
+                    }
+                    break;
+                case "click":
+                    incrementStatistic('totalClicks');
+                    break;
             }
         }
         sendResponse();
@@ -85,22 +107,22 @@ var statTrackers = {
 };
 
 function incrementStatistic(statisticName) {
-    if (!statTrackers[statisticName]) {
+    if(!statTrackers[statisticName]) {
         statTrackers[statisticName] = new StatTracker(statisticName);
     }
     var tracker = statTrackers[statisticName];
     tracker.valueWithinInterval++;
 
-    if (analyticsEnabled) {
+    if(analyticsEnabled) {
         ga('send', 'event', 'Analytics Track', tracker.name);
     }
 
-    if (!tracker.timer && tracker.velocityEnabled) {
+    if(!tracker.timer && tracker.velocityEnabled) {
         tracker.timer = setInterval(function() {
             var time = new Date().getTime();
             var statValue = tracker.valueWithinInterval;
             var avgOverTime = statValue * (60 / VELOCITY_INTERVAL)
-            if (statValue <= tracker.minCount || avgOverTime < tracker.minValue) {
+            if(statValue <= tracker.minCount || avgOverTime < tracker.minValue) {
                 tracker.valueWithinInterval = 0;
                 return;
             }
@@ -116,7 +138,7 @@ function incrementStatistic(statisticName) {
 
 function incrementValue(storageKey, amount) {
     chrome.storage.sync.get(storageKey, function(result) {
-        if (!result || !result[storageKey]) {
+        if(!result || !result[storageKey]) {
             result = 0;
         } else {
             result = result[storageKey];
@@ -124,24 +146,24 @@ function incrementValue(storageKey, amount) {
         result += amount;
         var setter = {};
         setter[storageKey] = result;
-        chrome.storage.sync.set(setter, function() {
-        });
+        chrome.storage.sync.set(setter, function() {});
     })
 
 }
 
 function addValue(storageKey, time, value) {
     chrome.storage.sync.get(storageKey, function(result) {
-        if (!result) {
-            result = {cpm: {}};
+        if(!result) {
+            result = {
+                cpm: {}
+            };
         } else {
             result = result[storageKey];
         }
         result[time] = value;
         var setter = {};
         setter[storageKey] = result;
-        chrome.storage.sync.set(setter, function() {
-        });
+        chrome.storage.sync.set(setter, function() {});
     })
 
 }

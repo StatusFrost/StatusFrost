@@ -41,6 +41,7 @@ function Statistic(name, friendlyName, graphType, group) {
 
 statistics.push(new Statistic("cpm", "Characters per Minute", "line"));
 statistics.push(new Statistic("pageviews", "Total Page Views", "number"));
+statistics.push(new Statistic("totalClicks", "Total Page Views", "number"));
 statistics.push(new Statistic("nonsslviews", "Unencrypted Page Views", "number", "pageViewCrypto"));
 statistics.push(new Statistic("sslviews", "Encrypted Page Views", "number", "pageViewCrypto"));
 statistics.push(new Statistic("category-programming", "Programming", "number", "pageViewCategory"));

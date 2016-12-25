@@ -6,6 +6,7 @@ chrome.extension.sendMessage({}, function(response) {
         }
     }, 10);
     document.onkeypress = keyPressListener;
+    document.onclick = clickListener
 });
 var oldURL = window.location.href;
 var urlChangeHandler = setInterval(checkURLChange, 500);
@@ -16,6 +17,14 @@ function checkURLChange() {
         documentReady();
         oldURL = newURL;
     }
+}
+
+function clickListener(e) {
+    chrome.extension.sendMessage({
+        type: "click",
+        x: e.pageX,
+        y: e.pageY
+    })
 }
 
 function keyPressListener(e) {

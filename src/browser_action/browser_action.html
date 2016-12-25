@@ -6,6 +6,10 @@
 			background: #ecf0f1;
 		}
 
+		h1 {
+			font-size: 2em;
+		}
+
 		#flex-container {
 			height: 50%;
 			width: 400px;
@@ -19,11 +23,15 @@
 		}
 
 		#mainPopup {
+			height: 90%;
+		}
+		#container {
+			overflow-y: auto;
+			position: relative;
 			height: 500px;
 		}
-
-		h1 {
-			font-size: 2em;
+		.full-height {
+			height: 100%;
 		}
 
 		.dataView {
@@ -41,12 +49,6 @@
 			height: 20px;
 			padding: 20px;
 			background: #3498db;
-			/** Offset the Position **/
-			position: relative;
-			margin-top: 0;
-			margin-bottom: 10px;
-			/** 3D Block Effect **/
-			box-shadow: 0 10px 0 0 #2980b9;
 			transition: 0.08s;
 			animation-fill-mode: forwards;
 			animation-play-state: paused;
@@ -57,6 +59,8 @@
 		.btn-stat:hover,
 		.btn-stat:hover .content {
 			background: #2980b9;
+			cursor: pointer;
+			cursor: hand;
 		}
 
 		.btn-stat.active {
@@ -65,7 +69,6 @@
 			top: 10px;
 			left: 10px;
 			position: absolute;
-			margin-bottom: 0;
 			animation-play-state: running;
 			width: 50px;
 			margin-right: 100%;
@@ -77,24 +80,33 @@
 	</style>
 </head>
 
-<div id="mainPopup">
-	<div id="flex-container">
-		<div id="stat-cpm" class="btn-stat" view="data-view-cpm">Characters Per Minute</div>
-		<div id="stat-pageData" class="btn-stat" view="data-view-page-data">Page Data</div>
-		<br>
-		<div id="stat-cryptoData" class="btn-stat" view="data-view-crypto-data">Encryption Data</div>
+<div id="container">
+	<div id="mainPopup">
+		<div id="flex-container">
+			<div id="stat-cpm" class="btn-stat" view="data-view-cpm">Characters Per Minute</div>
+			<div id="stat-pageData" class="btn-stat" view="data-view-page-data">Page Data</div>
+			<br>
+			<div id="stat-cryptoData" class="btn-stat" view="data-view-crypto-data">Encryption Data</div>
+		</div>
 	</div>
-</div>
-<div class="dataView" id="data-view-page-data">
-	<b>Pages visited: </b>
-	<div id="pageviewsChart"></div>
-	<canvas id="pageViewCategoryChart" width="400" height="400">Not enough data collected!</canvas>
-</div>
-<div class="dataView" id="data-view-crypto-data">
-	<canvas id="pageViewCryptoChart" width="400" height="400">Not enough data collected!</canvas>
-</div>
-<div class="dataView" id="data-view-cpm">
-	<canvas id="cpmChart" width="400" height="400">Not enough data collected!</canvas>
+	<div class="dataView" id="data-view-page-data">
+		<b>Pages visited: </b>
+		<div id="pageviewsChart"></div>
+		<br>
+		<canvas id="pageViewCategoryChart" width="400" height="400">Not enough data collected!</canvas>
+		<br>
+		<br>
+		<br>
+		<hr>
+		<b>Total Clicks: </b>
+		<div id="totalClicksChart"></div>
+	</div>
+	<div class="dataView" id="data-view-crypto-data">
+		<canvas id="pageViewCryptoChart" width="400" height="400">Not enough data collected!</canvas>
+	</div>
+	<div class="dataView" id="data-view-cpm">
+		<canvas id="cpmChart" width="400" height="400">Not enough data collected!</canvas>
+	</div>
 </div>
 <script src="Chart.bundle.min.js"></script>
 <script src="colors.js"></script>
