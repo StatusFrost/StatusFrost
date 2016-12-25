@@ -118,7 +118,26 @@ function renderDonutChart(keys, values, ctx, chartName) {
     };
     var doughnutChart = new Chart(ctx, {
         type: 'doughnut',
-        data: data
+        data: data,
+        options: {
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        var allData = data.datasets[tooltipItem.datasetIndex].data;
+                        var tooltipLabel = data.labels[tooltipItem.index];
+                        var tooltipData = allData[tooltipItem.index];
+                        var total = 0;
+                        for (var i in allData) {
+                            if(allData[i]) {
+                                total += allData[i];
+                            }
+                        }
+                        var tooltipPercentage = Math.round((tooltipData / total) * 100);
+                        return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
+                    }
+                }
+            }
+        }
     });
 }
 
