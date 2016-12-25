@@ -1,6 +1,10 @@
 //Grab settings object
 var settings = new Store("settings");
 var analyticsEnabled = settings.get("cb_enableAnalytics");
+if(analyticsEnabled == undefined) {
+    settings.set("cb_enableAnalytics", true)
+    analyticsEnabled = true;
+}
 //No data is sent unless analyitcs are enabled.
 (function(i, s, o, g, r, a, m) {
     i['GoogleAnalyticsObject'] = r;
