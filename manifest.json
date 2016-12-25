@@ -1,7 +1,7 @@
 {
   "name": "StatusFrost - Statistics on Your Browsing",
   "short_name": "StatusFrost",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "manifest_version": 2,
   "description": "Track your personal browsing statistics",
   "homepage_url": "https://github.com/Plazmaz/StatusFrost",

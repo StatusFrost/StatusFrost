@@ -17,6 +17,7 @@ if(analyticsEnabled == undefined) {
     a.src = g;
     m.parentNode.insertBefore(a, m)
 })(window, document, 'script', 'js/analytics.js', 'ga');
+ga('create', 'UA-67106116-5', 'auto');
 
 //Check for updates
 setInterval(update, 30000)
@@ -26,7 +27,6 @@ function update() {
     var originallyEnabled = analyticsEnabled;
     analyticsEnabled = settings.get("cb_enableAnalytics");//Enable google analytics if analytics are enabled
     if(!originallyEnabled && analyticsEnabled) {
-        ga('create', 'UA-67106116-5', 'auto'); // Replace with your property ID.
         ga('send', 'pageview');
     }
 
