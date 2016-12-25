@@ -154,11 +154,12 @@ function incrementValue(storageKey, amount) {
 function addValue(storageKey, time, value) {
     chrome.storage.sync.get(storageKey, function(result) {
         if(!result) {
-            result = {
-                cpm: {}
-            };
+            result = {};
         } else {
             result = result[storageKey];
+        }
+        if(!result) {
+            result = {};
         }
         result[time] = value;
         var setter = {};
