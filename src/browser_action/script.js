@@ -99,14 +99,20 @@ function initializeDoughnutCharts() {
     for (var i = 0; i < Object.keys(groupData).length; i++) {
         var key = Object.keys(groupData)[i];
         var group = groupData[key];
-        renderDonutChart(Object.keys(group), Object.values(group), document.getElementById(key + "Chart"), key)
+        if(key === "pageViewCrypto") {
+            renderDonutChart(Object.keys(group), Object.values(group), document.getElementById(key + "Chart"), key, ['#f1595f', '#2ecc71'])
+        } else {
+            renderDonutChart(Object.keys(group), Object.values(group), document.getElementById(key + "Chart"), key)
+        }
     }
 }
 
-function renderDonutChart(keys, values, ctx, chartName) {
-    var colors = [];
-    for (var i = 0; i < values.length; i++) {
-        colors.push(generateNextColor());
+function renderDonutChart(keys, values, ctx, chartName, colors) {
+    var colors = colors || [];
+    if(colors.length === 0) {
+        for (var i = 0; i < values.length; i++) {
+            colors.push(generateNextColor());
+        }
     }
     var data = {
         labels: keys,
