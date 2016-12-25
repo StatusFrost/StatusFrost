@@ -2,8 +2,11 @@
 var settings = new Store("settings");
 var analyticsEnabled = settings.get("cb_enableAnalytics");
 
-//Check for updated settings every 30s
-setInterval(function() {
+//Check for updates
+setInterval(update, 30000)
+
+function update() {
+    //Check Google Analytics:
     var originallyEnabled = analyticsEnabled;
     analyticsEnabled = settings.get("cb_enableAnalytics");//Enable google analytics if analytics are enabled
     if(!originallyEnabled && analyticsEnabled) {
@@ -21,25 +24,21 @@ setInterval(function() {
         ga('create', 'UA-67106116-5', 'auto'); // Replace with your property ID.
         ga('send', 'pageview');
     }
-}, 30000)
 
-
-//Enable google analytics if analytics are enabled
-if(analyticsEnabled) {
-    (function(i, s, o, g, r, a, m) {
-        i['GoogleAnalyticsObject'] = r;
-        i[r] = i[r] || function() {
-            (i[r].q = i[r].q || []).push(arguments)
-        }, i[r].l = 1 * new Date();
-        a = s.createElement(o),
-            m = s.getElementsByTagName(o)[0];
-        a.async = 1;
-        a.src = g;
-        m.parentNode.insertBefore(a, m)
-    })(window, document, 'script', 'js/analytics.js', 'ga');
-    ga('create', 'UA-67106116-5', 'auto'); // Replace with your property ID.
-    ga('send', 'pageview');
+    //Grab updated category list:
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            WEBSITE_CATEGORIES = JSON.parse(xhr.responseText)
+        }
+    };
+    xhr.open("GET", 'https://raw.githubusercontent.com/StatusFrost/WebsiteCategories/master/website_categories.json', true);
+    xhr.send()
 }
+
+
+//Initialization
+update();
 
 //Gather keypress velocity readings at x * 1000ms interval.
 var VELOCITY_INTERVAL = 3;

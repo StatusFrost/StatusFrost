@@ -1,4 +1,4 @@
-const WEBSITE_CATEGORIES = {
+var WEBSITE_CATEGORIES = {
     programming: [
         "*.stackoverflow.com",
         "*.github.com",
