@@ -1,6 +1,18 @@
 //Grab settings object
 var settings = new Store("settings");
 var analyticsEnabled = settings.get("cb_enableAnalytics");
+//No data is sent unless analyitcs are enabled.
+(function(i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function() {
+        (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'js/analytics.js', 'ga');
 
 //Check for updates
 setInterval(update, 30000)
@@ -10,17 +22,6 @@ function update() {
     var originallyEnabled = analyticsEnabled;
     analyticsEnabled = settings.get("cb_enableAnalytics");//Enable google analytics if analytics are enabled
     if(!originallyEnabled && analyticsEnabled) {
-        (function(i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r;
-            i[r] = i[r] || function() {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date();
-            a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0];
-            a.async = 1;
-            a.src = g;
-            m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', 'js/analytics.js', 'ga');
         ga('create', 'UA-67106116-5', 'auto'); // Replace with your property ID.
         ga('send', 'pageview');
     }
