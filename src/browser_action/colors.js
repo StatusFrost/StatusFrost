@@ -27,8 +27,17 @@ const COLORS = [
     "#329262",
     "#5574A6",
     "#3B3EAC",
-    "#d77fb3"
-
+    "#d77fb3",
+    "#1abc9c",
+    "#2ecc71",
+    "#3498db",
+    "#9b59b6",
+    "#34495e",
+    "#f39c12",
+    "#e67e22",
+    "#e74c3c",
+    "#95a5a6",
+    "#c0392b"
 ];
 var colorIndex = 0;
 function generateNextColor() {

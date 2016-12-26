@@ -64,5 +64,12 @@ var WEBSITE_CATEGORIES = {
         "*.pornhub.com",
         "*.xhamster.com",
         "*.xvideos.com"
+    ],
+    news: [
+        "*.nytimes.com",
+        "*.fox.com",
+        "*.medium.com",
+        "news.google.com",
+        "*.huffingtonpost.com"
     ]
 }
