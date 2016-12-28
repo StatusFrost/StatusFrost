@@ -1,6 +1,7 @@
 <!doctype html>
 
 <head>
+    <link rel="stylesheet" href="resources/icomoon/style.css">
 	<style type="text/css">
 		* {
 			background: #ecf0f1;
@@ -30,13 +31,11 @@
 			position: relative;
 			height: 500px;
 		}
-		.full-height {
-			height: 100%;
-		}
 
 		.dataView {
 			display: none;
 			position: absolute;
+			z-index: 2;
 			top: 90px;
 			width: 350px;
 			left: 40px;
@@ -64,26 +63,41 @@
 		}
 
 		.btn-stat.active {
-			/** Remove 3D Block Effect on Click **/
-			box-shadow: none;
+			position: absolute;
+			z-index: 3;
 			top: 10px;
 			left: 10px;
-			position: absolute;
-			animation-play-state: running;
 			width: 50px;
 			margin-right: 100%;
 		}
-
-		@keyframes shrink {
-			100% {}
+		#footer {
+			position: absolute;
+			z-index: 1;
+			left: 50%;
+			bottom: 5%;
+			transform: translateX(-50%);
+			font-size: 15pt !important;
+		}
+		#footer a {
+			text-decoration: none;
+		}
+		#title.disabled {
+			display: none;
+		}
+		[id$="Chart"] {
+			font-size: 18pt;
 		}
 	</style>
 </head>
 
 <div id="container">
+	<div id='testdiv' style='height: 1in; left: -100%; position: absolute; top: -100%; width: 1in;'></div>
 	<div id="mainPopup">
+		<span id="title"><center><h1>StatusFrost</h1></center><hr></span>
+
 		<div id="flex-container">
-			<div id="stat-cpm" class="btn-stat" view="data-view-cpm">Characters Per Minute</div>
+			<div id="stat-keyboard" class="btn-stat" view="data-view-keyboard">Keyboard</div>
+			<div id="stat-mouse" class="btn-stat" view="data-view-mouse">Mouse</div>
 			<div id="stat-pageData" class="btn-stat" view="data-view-page-data">Page Data</div>
 			<br>
 			<div id="stat-cryptoData" class="btn-stat" view="data-view-crypto-data">Encryption Data</div>
@@ -92,23 +106,31 @@
 	<div class="dataView" id="data-view-page-data">
 		<b>Pages visited: </b>
 		<div id="pageviewsChart"></div>
-		<canvas id="pageViewCategoryChart" width="400" height="400">Not enough data collected!</canvas>
-		<br>
-		<br>
-		<br>
-		<hr>
-		<b>Total Clicks: </b>
-		<div id="totalClicksChart"></div>
+		<canvas id="pageViewCategoryChart">Not enough data collected!</canvas>
 	</div>
 	<div class="dataView" id="data-view-crypto-data">
 		<canvas id="pageViewCryptoChart" width="400" height="400">Not enough data collected!</canvas>
 	</div>
-	<div class="dataView" id="data-view-cpm">
+	<div class="dataView" id="data-view-mouse">
+		<b>Total Clicks: </b>
+		<div id="totalClicksChart"></div>
+		<b>Total Distance Moved(meters)</b>
+		<div id="mouseDistanceMovedChart"></div>
+	</div>
+	<div class="dataView" id="data-view-keyboard">
 		<b>Max Characters per Minute: </b>
 		<div id="cpmMaxValue"></div>
 		<canvas id="cpmChart" width="400" height="400">Not enough data collected!</canvas>
 	</div>
 </div>
+<center>
+	<div id="footer">
+		<a class="icon-github" href="https://github.com/StatusFrost/StatusFrost" title="Github" target="_blank"></a>
+		 &bull; <a class="icon-bug" href="https://github.com/StatusFrost/StatusFrost/issues" title="File a Bug" target="_blank"></a>
+		 &bull; <a class="icon-home" href="https://dylankatz.com" title ="Homepage" target="_blank"></a>
+		 &bull; <a class="icon-paypal" href="https://paypal.me/Plazmaz" title="Donate" target="_blank"></a>
+	</div>
+</center>
 <script src="Chart.bundle.min.js"></script>
 <script src="colors.js"></script>
 <script src="script.js"></script>
