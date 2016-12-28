@@ -56,6 +56,7 @@ chrome.extension.onMessage.addListener(
                 case "keypress":
                     incrementStatistic('cpm');
                     break;
+                case "mouse_move_delta":
                 case "pageLoad":
                     incrementStatistic('pageviews');
                     if(request.sslUsed) {
