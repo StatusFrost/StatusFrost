@@ -1,5 +1,8 @@
 var mouseDelay = 500;
 var minMouseMovement = 100;
+var updateInterval = 5000;
+var currentTotalDistanceX = 0;
+var currentTotalDistanceY = 0;
 var mouseX = 0;
 var mouseY = 0;
 var lastMouseX = 0;
@@ -12,6 +15,7 @@ chrome.extension.sendMessage({}, function(response) {
         }
     }, 10);
     setInterval(movementUpdate, mouseDelay);
+    setInterval(sendMovementData, updateInterval);
     document.onkeypress = keyPressListener;
     document.onclick = clickListener
     document.onmousemove = mouseMoveListener;
@@ -46,12 +50,22 @@ function movementUpdate() {
     var dY = mouseY - lastMouseY;
     lastMouseX = mouseX;
     lastMouseY = mouseY;
+    currentTotalDistanceX += dX;
+    currentTotalDistanceY += dY;
+}
+
+function sendMovementData() {
+    var dX = currentTotalDistanceX;
+    var dY = currentTotalDistanceY;
     if((dX * dX) + (dY * dY) >= minMouseMovement * minMouseMovement) {
+        console.log((dX * dX) + (dY * dY))
         chrome.extension.sendMessage({
             type: "mouse_move_delta",
             dX: dX * dX,
             dY: dY * dY
         })
+        currentTotalDistanceX = 0;
+        currentTotalDistanceY = 0;
     }
 }
 
