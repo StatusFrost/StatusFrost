@@ -58,7 +58,6 @@ function sendMovementData() {
     var dX = currentTotalDistanceX;
     var dY = currentTotalDistanceY;
     if((dX * dX) + (dY * dY) >= minMouseMovement * minMouseMovement) {
-        console.log((dX * dX) + (dY * dY))
         chrome.extension.sendMessage({
             type: "mouse_move_delta",
             dX: dX * dX,
