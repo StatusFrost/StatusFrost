@@ -82,6 +82,15 @@ function iterateStatistic(i) {
                     var timestamps = Object.keys(resultValue);
                     var maxValues = 10 * bucketSize;
                     renderLineChart(timestamps, resultValue, maxValues, ctx, statistic.friendlyName);
+                    var maxValue = 0;
+                    for(var j = 0; j < timestamps.length; j++) {
+                        if(resultValue[timestamps[j]] > maxValue) {
+                            maxValue = resultValue[timestamps[j]];
+                        }
+                    }
+                    if(maxValue != -1) {
+                        document.getElementById(statName + "MaxValue").innerHTML = "<h2>" + maxValue + "</h2>"
+                    }
                 }
             } else {
                 if (statistic.graphType == 'number') {
