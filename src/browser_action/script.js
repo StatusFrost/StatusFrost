@@ -116,15 +116,17 @@ function renderDonutChart(keys, values, ctx, chartName, colors) {
         }
     }
     var labels = [];
+    var data = [];
     for(var i = 0; i < keys.length; i++) {
         if(values[i] && values[i] > 0) {
             labels.push(keys[i]);
+            data.push(values[i]);
         }
     }
     var data = {
         labels: labels,
         datasets: [{
-            data: values,
+            data: data,
             backgroundColor: colors,
             hoverBackgroundColor: colors
         }]
