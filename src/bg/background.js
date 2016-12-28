@@ -57,6 +57,7 @@ chrome.extension.onMessage.addListener(
                     incrementStatistic('cpm');
                     break;
                 case "mouse_move_delta":
+                    incrementValue('mouseDistanceMoved', Math.sqrt((request.dX) + (request.dY)));
                 case "pageLoad":
                     incrementStatistic('pageviews');
                     if(request.sslUsed) {

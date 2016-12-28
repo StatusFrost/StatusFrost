@@ -1,9 +1,13 @@
 var statistics = [];
-var bucketSize = 10;
+const BUCKET_SIZE = 5;
+var devicePixelRatio = window.devicePixelRatio || 1;
+var dpi_x = document.getElementById('testdiv').offsetWidth * devicePixelRatio;
+var dpi_y = document.getElementById('testdiv').offsetHeight * devicePixelRatio;
 Array.prototype.forEach.call(document.getElementsByClassName("btn-stat"), function(elem) {
     elem.onclick = function() {
         var inactive = elem.className.indexOf("active") == -1;
         if (inactive) {
+            document.getElementById("title").className += "disabled";
             elem.className += " active";
             elem.setAttribute("original-value", elem.innerHTML);
             elem.innerHTML = "Back";
@@ -12,6 +16,7 @@ Array.prototype.forEach.call(document.getElementsByClassName("btn-stat"), functi
                     element.style.display = "none"
             });
         } else {
+            document.getElementById("title").className = "";
             elem.className = elem.className.replace(/ \bactive\b/, "");
             elem.innerHTML = elem.getAttribute("original-value");
             Array.prototype.forEach.call(document.getElementsByClassName("btn-stat"), function(element) {
@@ -31,17 +36,29 @@ Array.prototype.forEach.call(document.getElementsByClassName("btn-stat"), functi
     }
 });
 
-function Statistic(name, friendlyName, graphType, group) {
+/*
+ * Statistic
+ * name - The stored name of this Statistic
+ * friendlyName - The human-readable name of this Statistic
+ * graphType - How will this be displayed? (number, line)
+ * group - If present, this data will be grouped into a doughnut chart.
+ *   default: none
+ * modifier - Wherever displayed, values will be multiplied by this number.
+ *   default: 1
+ */
+function Statistic(name, friendlyName, graphType, group, modifier) {
     this.name = name;
     this.graphType = graphType;
     this.values = [];
     this.friendlyName = friendlyName;
     this.group = group;
+    this.modifier = modifier || 1;
 }
 
 statistics.push(new Statistic("cpm", "Characters per Minute", "line"));
 statistics.push(new Statistic("pageviews", "Total Page Views", "number"));
-statistics.push(new Statistic("totalClicks", "Total Page Views", "number"));
+statistics.push(new Statistic("totalClicks", "Total Clicks", "number"));
+statistics.push(new Statistic("mouseDistanceMoved", "Mouse Distance Moved(meters)", "number", false, 1/Math.sqrt(dpi_x * dpi_y)/1000));
 statistics.push(new Statistic("nonsslviews", "Unencrypted Page Views", "number", "pageViewCrypto"));
 statistics.push(new Statistic("sslviews", "Encrypted Page Views", "number", "pageViewCrypto"));
 statistics.push(new Statistic("category-programming", "Programming", "number", "pageViewCategory"));
@@ -77,19 +94,19 @@ function iterateStatistic(i) {
             var ctx = document.getElementById(statName + "Chart");
             if(resultValue) {
                 if (statistic.graphType == 'number') {
-                    ctx.innerHTML = "<h2>" + resultValue + "</h2>";
+                    ctx.innerHTML = round(resultValue * statistic.modifier, 2);
                 } else if (statistic.graphType == 'line') {
                     var timestamps = Object.keys(resultValue);
-                    var maxValues = 10 * bucketSize;
+                    var maxValues = 10 * BUCKET_SIZE;
                     renderLineChart(timestamps, resultValue, maxValues, ctx, statistic.friendlyName);
                     var maxValue = 0;
                     for(var j = 0; j < timestamps.length; j++) {
                         if(resultValue[timestamps[j]] > maxValue) {
-                            maxValue = resultValue[timestamps[j]];
+                            maxValue = round(resultValue[timestamps[j]] * statistic.modifier, 2);
                         }
                     }
                     if(maxValue != -1) {
-                        document.getElementById(statName + "MaxValue").innerHTML = "<h2>" + maxValue + "</h2>"
+                        document.getElementById(statName + "MaxValue").innerHTML = maxValue
                     }
                 }
             } else {
@@ -103,6 +120,10 @@ function iterateStatistic(i) {
             iterateStatistic(i + 1);
         });
     }
+}
+
+function round(value, places) {
+    return Math.round(value * Math.pow(10, places)) / Math.pow(10, places);
 }
 
 function initializeDoughnutCharts() {
@@ -168,12 +189,12 @@ function renderDonutChart(keys, values, ctx, chartName, colors) {
 function renderLineChart(timestamps, resultValue, maxValues, ctx, statisticName) {
     var buckets = [];
     var start = timestamps.length - maxValues > 0 ? timestamps.length - maxValues : 0
-    for (var i = start - bucketSize; i < timestamps.length; i += bucketSize) {
+    for (var i = start - BUCKET_SIZE; i < timestamps.length; i += BUCKET_SIZE) {
         var value = 0;
-        for (var j = i; j < i + bucketSize && j < timestamps.length; j++) {
+        for (var j = i; j < i + BUCKET_SIZE && j < timestamps.length; j++) {
             value += Object.values(resultValue)[j];
         }
-        value /= bucketSize;
+        value /= BUCKET_SIZE;
         if (value == 0) {
             continue;
         }
@@ -196,7 +217,7 @@ function renderLineChart(timestamps, resultValue, maxValues, ctx, statisticName)
                 xAxes: [{
                     scaleLabel: {
                         display: true,
-                        labelString: 'Bucket(' + bucketSize + ' samples)'
+                        labelString: 'Bucket(' + BUCKET_SIZE + ' samples)'
                     }
                 }]
             }
