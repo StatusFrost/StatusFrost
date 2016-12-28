@@ -25,9 +25,9 @@ setInterval(update, 30000)
 function update() {
     //Check Google Analytics:
     var originallyEnabled = analyticsEnabled;
-    analyticsEnabled = settings.get("cb_enableAnalytics");//Enable google analytics if analytics are enabled
+    analyticsEnabled = settings.get("cb_enableAnalytics"); //Enable google analytics if analytics are permitted
     if(!originallyEnabled && analyticsEnabled) {
-        ga('send', 'pageview');
+        ga('send', 'pageview', chrome.runtime.getManifest().version);
     }
 
     //Grab updated category list:
