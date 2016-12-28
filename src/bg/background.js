@@ -27,6 +27,8 @@ function update() {
     var originallyEnabled = analyticsEnabled;
     analyticsEnabled = settings.get("cb_enableAnalytics"); //Enable google analytics if analytics are permitted
     if(!originallyEnabled && analyticsEnabled) {
+        ga('send', 'pageview', chrome.runtime.getManifest().version + "/optin");
+    } else if(analyticsEnabled) {
         ga('send', 'pageview', chrome.runtime.getManifest().version);
     }
 
